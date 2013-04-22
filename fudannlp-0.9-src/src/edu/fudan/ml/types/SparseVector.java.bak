@@ -1,0 +1,294 @@
+package edu.fudan.ml.types;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+import gnu.trove.TIntDoubleHashMap;
+import gnu.trove.TIntDoubleIterator;
+import gnu.trove.TLongDoubleHashMap;
+import gnu.trove.TLongDoubleIterator;
+
+public class SparseVector extends SparseArray<Double> implements Serializable {
+
+	public int len = 0;
+
+	public SparseVector() {
+		super();
+	}
+
+	/**
+	 * 对应位置加上值
+	 * 
+	 * @param index
+	 * @param value
+	 */
+	// public void put(int index, double value) {
+	// vector.put(index,value);
+	// if(index>len)
+	// len = index;
+	// }
+	public void put(int index, double value) {
+		super.put(index, value);
+		if (index > len)
+			len = index;
+	}
+
+	// public void length() {
+	// len = 0;
+	// TIntDoubleIterator it = vector.iterator();
+	// for (int i = vector.size(); i-- > 0;) {
+	// it.advance();
+	// if(it.key()>len)
+	// len = it.key();
+	// }
+	// }
+	public void length() {
+		len = 0;
+		if (length > 0)
+			len = index[length - 1];
+	}
+
+	public void minus(SparseVector sv) {
+		for (int i = 0; i < sv.length; i++) {
+			int idx = sv.index[i];
+			Double val = get(idx);
+			if (val != null) {
+				val -= sv.get(idx);
+			} else {
+				val = -sv.get(idx);
+			}
+			put(idx, val);
+		}
+	}
+
+	/**
+	 * 对应位置加上值
+	 * 
+	 * @param index
+	 * @param value
+	 */
+	// public void add(int index, double value) {
+	// vector.adjustOrPutValue(index,value,value);
+	// }
+	public void add(int index, double value) {
+		put(index, value);
+	}
+
+	/**
+	 * 加另一个稀疏向量
+	 * 
+	 * @param sv
+	 */
+	public void add(SparseVector sv) {
+		plus(sv);
+	}
+
+	public void plus(SparseVector sv) {
+		for (int i = 0; i < sv.length; i++) {
+			int idx = sv.index[i];
+			Double val = get(idx);
+			if (val != null) {
+				val += sv.get(idx);
+			} else {
+				val = sv.get(idx);
+			}
+			put(idx, val);
+		}
+	}
+
+	// public void subtract(SparseVector sv) {
+	// TIntDoubleIterator it = sv.vector.iterator();
+	// for (int i = sv.vector.size(); i-- > 0;) {
+	// it.advance();
+	// vector.adjustOrPutValue(it.key(), -it.value(),-it.value());
+	// }
+	// it = null;
+	// }
+	public void subtract(SparseVector sv) {
+		for (int i = 0; i < sv.length; i++) {
+			double v = -get(sv.index[i]);
+			put(sv.index[i], v);
+		}
+	}
+
+	/**
+	 * 
+	 * @param sv
+	 * @param w
+	 */
+	// public void add(SparseVector sv, double w) {
+	// TIntDoubleIterator it = sv.vector.iterator();
+	// for (int i = sv.vector.size(); i-- > 0;) {
+	// it.advance();
+	// double v = w*it.value();
+	// vector.adjustOrPutValue(it.key(),v,v);
+	// }
+	// it = null;
+	// }
+	public void add(SparseVector sv, double w) {
+		for (int i = 0; i < sv.length; i++) {
+			double v = w * get(sv.index[i]);
+			put(sv.index[i], v);
+		}
+	}
+
+	public void set(int index, double value) {
+		if (value != 0)
+			put(index, value);
+
+	}
+
+	public double elementAt(int index) {
+		Double val = get(index);
+		if (val != null)
+			return val;
+		else
+			return 0;
+	}
+
+	public int size() {
+		return length;
+	}
+
+	public int[] indices() {
+		return index;
+	}
+
+	public double dotProduct(SparseVector sv) {
+		double product = 0;
+		for (int i = 0; i < sv.length; i++) {
+			Double val = get(sv.index[i]);
+			if (val != null) {
+				product += sv.get(sv.index[i]) * get(sv.index[i]);
+			}
+		}
+		return product;
+	}
+
+	// A*(B+c)
+	public double dotProduct(SparseVector wii, int li, int n) {
+		double product = 0;
+		int z = n * li;
+		for (int i = 0; i < index.length; i++) {
+			product += data[i] * wii.get(index[i] + z);
+		}
+		return product;
+	}
+
+	public void scalarMultiply(double d) {
+		for (int i = 0; i < data.length; i++) {
+			data[i] *= d;
+		}
+	}
+
+	public void scalarDivide(double d) {
+		if (d == 0)
+			return;
+		for (int i = 0; i < data.length; i++) {
+			data[i] /= d;
+		}
+	}
+
+	private double getValue(int key) {
+		Double val = get(key);
+		if (val != null)
+			return val;
+		else
+			return 0;
+	}
+
+	public double l1Norm() {
+		double norm = 0;
+		for (int i = 0; i < length; i++) {
+			norm += Math.abs(get(index[i]));
+		}
+		return norm;
+	}
+
+	public double l2Norm2() {
+		double norm = 0;
+		for (int i = 0; i < length; i++) {
+			norm += Math.pow(get(index[i]), 2);
+		}
+		return norm;
+	}
+
+	public double l2Norm() {
+		return Math.sqrt(l2Norm2());
+	}
+
+	public double infinityNorm() {
+		double norm = 0;
+		for (int i = 0; i < data.length; i++) {
+			if (Math.abs(data[i]) > norm)
+				norm = Math.abs(data[i]);
+		}
+		return norm;
+	}
+
+	public SparseVector clone() {
+		SparseVector sv = new SparseVector();
+		sv.length = this.length;
+		sv.index = new int[this.length];
+		System.arraycopy(this.index, 0, sv.index, 0, this.length);
+		sv.data = new Double[this.length];
+		System.arraycopy(this.data, 0, sv.data, 0, this.length);
+		return sv;
+	}
+
+	public SparseVector replicate(ArrayList list, int dim) {
+		SparseVector sv = new SparseVector();
+		for (int i = 0; i < length; i++) {
+			double val = get(index[i]);
+			for (int j = 0; j < list.size(); j++) {
+				sv.put(index[i] + dim * ((Integer) list.get(j)), val);
+			}
+		}
+		return sv;
+	}
+
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < length; i++) {
+			sb.append(index[i]);
+			sb.append(':');
+			sb.append(get(index[i]));
+			sb.append(' ');
+		}
+		return sb.toString();
+	}
+
+	public static void main(String[] args) {
+		SparseVector sv = new SparseVector();
+		sv.add(1, 1);
+		sv.add(1, 1);
+	}
+
+	public void trim(double d) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void normalize() {
+		double norm = l2Norm();
+		if (norm > 0)
+			scalarMultiply(1 / norm);
+	}
+
+	/**
+	 * 计算两个向量距离
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public double distanceSquared(SparseVector sv) {
+		double dist = 0.0;
+		SparseVector tmpVector = this.clone();
+		tmpVector.minus(sv);
+		for (int i = 0; i < tmpVector.size(); i++)
+			dist += Math.pow(tmpVector.get(tmpVector.index[i]), 2);
+		tmpVector = null;
+		return dist;
+	}
+
+}
