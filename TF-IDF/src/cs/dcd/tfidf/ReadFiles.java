@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class ReadFiles {
 	
+	private static Map<Integer, String> fileMap = new HashMap<Integer, String>();
+	
 	public ReadFiles()
 	{
 		
@@ -23,7 +25,7 @@ public class ReadFiles {
 		return new BufferedReader(reader).readLine();
 	}
 	
-	public static Map<Integer, String> readFile(String filePath, Map<Integer, String> fileMap) throws IOException, FileNotFoundException
+	public static Map<Integer, String> readFileMap(String filePath) throws IOException, FileNotFoundException
 	{
 		if (fileMap == null)
 		{
@@ -54,7 +56,7 @@ public class ReadFiles {
 					}
 					else if (readingFile.isDirectory())
 					{
-						readFile(filePath + "/" + fileList[i], fileMap);
+						readFileMap(filePath + "/" + fileList[i]);
 					}
 				}
 			}
