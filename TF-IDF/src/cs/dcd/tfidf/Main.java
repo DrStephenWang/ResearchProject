@@ -10,7 +10,8 @@ import cs.dcd.tfidf.ReadFiles;
 
 public class Main {
 	
-	public static final double TDIDF_MIN_VALUE = 0.003;
+	public static final double TDIDF_MIN_VALUE = 0.0015;
+	public static final double TDIDF_MAX_VALUE = 0.0025;
 	
     public static void main(String[] args) throws IOException
     {
@@ -54,7 +55,7 @@ public class Main {
     		PrintWriter fileTFIDFOutput = new PrintWriter(new FileWriter(outputPath + "\\" + filename));
     		for (String itemString : tfidf.get(filename).keySet())
     		{
-    			if (tfidf.get(filename).get(itemString) > TDIDF_MIN_VALUE)
+    			if (tfidf.get(filename).get(itemString) > TDIDF_MIN_VALUE && tfidf.get(filename).get(itemString) < TDIDF_MAX_VALUE)
     			{
     				fileTFIDFOutput.println(itemString);
     			}

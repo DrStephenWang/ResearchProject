@@ -15,9 +15,10 @@ public class Main {
     	Map<Integer, String> fileMap = ReadFiles.readFileMap(inputPath);
     	
     	Apriori ap = new Apriori();
-    	ap.init(fileMap);
+    	ap.init(fileMap, outputPath);
+    	ap.aprioriMining();
     	
-    	
+    	System.out.println("Done!");
     	
 	}
 	
