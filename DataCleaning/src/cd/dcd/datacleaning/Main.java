@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 public class Main {
 
-	public static final double TDIDF_MIN_VALUE = 0.0015;
-	public static final double TDIDF_MAX_VALUE = 0.0025;
+	public static final int TF_MIN_VALUE = 0;
+	public static final int TF_MAX_VALUE = 5;
 	
 	public static void main(String[] args) throws IOException
     {
@@ -17,12 +18,29 @@ public class Main {
     	String outputPath = ReadFiles.readDirectoryPath("Output Target Path: ");
     	Map<Integer, String> fileMap = ReadFiles.readFileMap(inputPath);
     	
+    	TreeSet<String> medicineSet = CreateFeatureMap.CreateFeatureMapFromDict("D:/Eclipse-WorkSpace/DataCleaning/src/中药.dic");
+    	TreeSet<String> prescriptionSet = CreateFeatureMap.CreateFeatureMapFromDict("D:/Eclipse-WorkSpace/DataCleaning/src/方剂.dic");
+    	TreeSet<String> symptomAndDiseaseSet = CreateFeatureMap.CreateFeatureMapFromDict("D:/Eclipse-WorkSpace/DataCleaning/src/医案病名病症.dic");
+    	
     	Map<String, HashMap<String, Integer>> normal = TFIDF.NormalTFOfAll(fileMap);
     	PrintWriter fileTFOutput = new PrintWriter(new FileWriter(outputPath + "\\TF.txt"));
     	for (String filename : normal.keySet())
         {
     		fileTFOutput.println("fileName " + filename);
     		fileTFOutput.println("TF " + normal.get(filename).toString());
+    		
+    		PrintWriter fileTFIDFOutput = new PrintWriter(new FileWriter(outputPath + "\\" + filename));
+    		for (String itemString : normal.get(filename).keySet())
+    		{
+    			if (normal.get(filename).get(itemString) > TF_MIN_VALUE && normal.get(filename).get(itemString) < TF_MAX_VALUE)
+    			{
+    				if (medicineSet.contains(itemString) || prescriptionSet.contains(itemString) || symptomAndDiseaseSet.contains(itemString))
+    				{
+    					fileTFIDFOutput.println(itemString);
+    				}			
+    			}
+    		}
+    		fileTFIDFOutput.close();
         }
     	fileTFOutput.close();
         
@@ -49,16 +67,6 @@ public class Main {
     	{
     		TFIDFOutput.println("fileName " + filename);
     		TFIDFOutput.println("TFIDF " + tfidf.get(filename).toString());
-    		
-    		PrintWriter fileTFIDFOutput = new PrintWriter(new FileWriter(outputPath + "\\" + filename));
-    		for (String itemString : tfidf.get(filename).keySet())
-    		{
-    			if (tfidf.get(filename).get(itemString) > TDIDF_MIN_VALUE && tfidf.get(filename).get(itemString) < TDIDF_MAX_VALUE)
-    			{
-    				fileTFIDFOutput.println(itemString);
-    			}
-    		}
-    		fileTFIDFOutput.close();
         }
     	TFIDFOutput.close();
     	
