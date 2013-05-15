@@ -65,15 +65,15 @@ public class Main {
     	dataSetOutput.println("@relation tcm");
     	dataSetOutput.println();
     	
-    	for (int i = 1; i <= 20; i++)
+    	for (int i = 1; i <= 100; i++)
     	{
     		dataSetOutput.println("@attribute Medicine" + i + " {" + medicineLocalSet.toString().substring(1, medicineLocalSet.toString().length()-1) + "}");	
     	}    	
-    	for (int i = 1; i <= 5; i++)
+    	for (int i = 1; i <= 50; i++)
     	{
     		dataSetOutput.println("@attribute Prescription" + i + " {" + prescriptionLocalSet.toString().substring(1, prescriptionLocalSet.toString().length()-1) + "}");	
     	}    	
-    	for (int i = 1; i <= 10; i++)
+    	for (int i = 1; i <= 50; i++)
     	{
     		dataSetOutput.println("@attribute SymptomAndDisease" + i + " {" + symptomAndDiseaseLocalSet.toString().substring(1, symptomAndDiseaseLocalSet.toString().length()-1) + "}");	
     	}
@@ -124,7 +124,7 @@ public class Main {
 			fileInput.close();
 			
 			dataSetOutput.print(medicine.toString().substring(1, medicine.toString().length()-1));
-			for (int i = 20 - medicine.size(); i > 0; i--)
+			for (int i = 100 - medicine.size(); i > 0; i--)
 			{
 				dataSetOutput.print(", ?");
 			}
@@ -132,7 +132,7 @@ public class Main {
 			dataSetOutput.print(", ");
 			
 			dataSetOutput.print(prescription.toString().substring(1, prescription.toString().length()-1));
-			for (int i = 5 - prescription.size(); i > 0; i--)
+			for (int i = 50 - prescription.size(); i > 0; i--)
 			{
 				dataSetOutput.print(", ?");
 			}
@@ -140,7 +140,7 @@ public class Main {
 			dataSetOutput.print(", ");
 			
 			dataSetOutput.print(symptomAndDisease.toString().substring(1, symptomAndDisease.toString().length()-1));
-			for (int i = 10 - symptomAndDisease.size(); i > 0; i--)
+			for (int i = 50 - symptomAndDisease.size(); i > 0; i--)
 			{
 				dataSetOutput.print(", ?");
 			}
