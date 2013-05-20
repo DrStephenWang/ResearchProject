@@ -65,18 +65,34 @@ public class Main {
     	dataSetOutput.println("@relation tcm");
     	dataSetOutput.println();
     	
-    	for (int i = 1; i <= 100; i++)
+    	for (String item : medicineLocalSet)
     	{
-    		dataSetOutput.println("@attribute Medicine" + i + " {" + medicineLocalSet.toString().substring(1, medicineLocalSet.toString().length()-1) + "}");	
-    	}    	
-    	for (int i = 1; i <= 50; i++)
-    	{
-    		dataSetOutput.println("@attribute Prescription" + i + " {" + prescriptionLocalSet.toString().substring(1, prescriptionLocalSet.toString().length()-1) + "}");	
-    	}    	
-    	for (int i = 1; i <= 50; i++)
-    	{
-    		dataSetOutput.println("@attribute SymptomAndDisease" + i + " {" + symptomAndDiseaseLocalSet.toString().substring(1, symptomAndDiseaseLocalSet.toString().length()-1) + "}");	
+    		dataSetOutput.println("@attribute '" + item + "' { t}");
     	}
+    	
+    	for (String item : prescriptionLocalSet)
+    	{
+    		dataSetOutput.println("@attribute '" + item + "' { t}");
+    	}
+    	
+    	for (String item : symptomAndDiseaseLocalSet)
+    	{
+    		dataSetOutput.println("@attribute '" + item + "' { t}");
+    	}
+    	
+//    	for (int i = 1; i <= 100; i++)
+//    	{
+//    		dataSetOutput.println("@attribute Medicine" + i + " {" + medicineLocalSet.toString().substring(1, medicineLocalSet.toString().length()-1) + "}");	
+//    	}    	
+//    	for (int i = 1; i <= 50; i++)
+//    	{
+//    		dataSetOutput.println("@attribute Prescription" + i + " {" + prescriptionLocalSet.toString().substring(1, prescriptionLocalSet.toString().length()-1) + "}");	
+//    	}    	
+//    	for (int i = 1; i <= 50; i++)
+//    	{
+//    		dataSetOutput.println("@attribute SymptomAndDisease" + i + " {" + symptomAndDiseaseLocalSet.toString().substring(1, symptomAndDiseaseLocalSet.toString().length()-1) + "}");	
+//    	}
+    	
     	dataSetOutput.println();
     	
     	dataSetOutput.println("@data");
@@ -123,29 +139,45 @@ public class Main {
 			
 			fileInput.close();
 			
-			dataSetOutput.print(medicine.toString().substring(1, medicine.toString().length()-1));
-			for (int i = 100 - medicine.size(); i > 0; i--)
-			{
-				dataSetOutput.print(", ?");
-			}
+			String data = "";
 			
-			dataSetOutput.print(", ");
+			for (String item : medicineLocalSet)
+	    	{
+	    		if (medicine.contains(item))
+	    		{
+	    			data += "t,";
+	    		}
+	    		else 
+	    		{
+	    			data += "?,";
+				}
+	    	}
+	    	
+			for (String item : prescriptionLocalSet)
+	    	{
+	    		if (prescription.contains(item))
+	    		{
+	    			data += "t,";
+	    		}
+	    		else 
+	    		{
+	    			data += "?,";
+				}
+	    	}
 			
-			dataSetOutput.print(prescription.toString().substring(1, prescription.toString().length()-1));
-			for (int i = 50 - prescription.size(); i > 0; i--)
-			{
-				dataSetOutput.print(", ?");
-			}
+			for (String item : symptomAndDiseaseLocalSet)
+	    	{
+	    		if (symptomAndDisease.contains(item))
+	    		{
+	    			data += "t,";
+	    		}
+	    		else 
+	    		{
+	    			data += "?,";
+				}
+	    	}
 			
-			dataSetOutput.print(", ");
-			
-			dataSetOutput.print(symptomAndDisease.toString().substring(1, symptomAndDisease.toString().length()-1));
-			for (int i = 50 - symptomAndDisease.size(); i > 0; i--)
-			{
-				dataSetOutput.print(", ?");
-			}
-			
-			dataSetOutput.println();
+			dataSetOutput.println(data.substring(0, data.length()-1));
 			
 		}
     	    	
