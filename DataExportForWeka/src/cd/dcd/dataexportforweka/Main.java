@@ -183,6 +183,29 @@ public class Main {
     	    	
     	dataSetOutput.close();
     	
+    	PrintWriter dataMedicineSetOutput = new PrintWriter(new FileWriter(outputPath + "\\" + "MedicineDataSet.txt"));
+    	PrintWriter dataPrescriptionSetOutput = new PrintWriter(new FileWriter(outputPath + "\\" + "PrescriptionDataSet.txt"));
+    	PrintWriter dataSymptomAndDiseaseSetOutput = new PrintWriter(new FileWriter(outputPath + "\\" + "SymptomAndDiseaseDataSet.txt"));
+    	
+    	for (String item : medicineLocalSet)
+    	{
+    		dataMedicineSetOutput.println(item);
+    	}
+    	
+    	for (String item : prescriptionLocalSet)
+    	{
+    		dataPrescriptionSetOutput.println(item);
+    	}
+    	
+    	for (String item : symptomAndDiseaseLocalSet)
+    	{
+    		dataSymptomAndDiseaseSetOutput.println(item);
+    	}
+    	
+    	dataMedicineSetOutput.close();
+    	dataPrescriptionSetOutput.close();
+    	dataSymptomAndDiseaseSetOutput.close();
+    	
     	System.out.println("Done!");
     	
     }
