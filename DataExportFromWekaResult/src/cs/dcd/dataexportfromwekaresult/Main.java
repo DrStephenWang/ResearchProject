@@ -119,7 +119,7 @@ public class Main {
 					NumberFormat other = NumberFormat.getInstance();
 					other.setMaximumFractionDigits(2);
 								
-					fileOutput.println(name1 + " " + name2 + " " + sup.format(support) + " " + other.format(confidence) + " " + other.format(lift) + " " + other.format(conviction));
+					fileOutput.println(name1 + " " + name2 + " " + sup.format(support) + " " + other.format(confidence) + " " + lift + " " + other.format(conviction));
 				}
 				else
 				{
