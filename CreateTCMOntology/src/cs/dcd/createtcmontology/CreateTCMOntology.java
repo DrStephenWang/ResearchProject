@@ -67,13 +67,13 @@ public class CreateTCMOntology {
 	    bases.setDomain(prescriptionClass);
 	    bases.setRange(medicineClass);
 	    
-	    OWLObjectProperty support1 = owlModel.createAnnotationOWLObjectProperty("支持度1");
-	    support1.addSuperproperty(conjugation);	    
-	    
-	    OWLDatatypeProperty support = owlModel.createAnnotationOWLDatatypeProperty("支持度");
-	    support.setDomain(symptomClass);
-	    support.setRange(owlModel.getXSDdouble());	    
-	    support.addSuperproperty(conjugation);
+//	    OWLObjectProperty support1 = owlModel.createAnnotationOWLObjectProperty("支持度1");
+//	    support1.addSuperproperty(conjugation);	  
+//   
+//	    OWLDatatypeProperty support = owlModel.createAnnotationOWLDatatypeProperty("支持度");
+//	    support.setDomain(symptomClass);
+//	    support.setRange(owlModel.getXSDdouble());	    
+//	    support.addSuperproperty(conjugation);
 	    
 	    String inputPath = "D:/Eclipse-WorkSpace/CreateTCMOntology/input/";
 	    BufferedReader br = null;
@@ -163,8 +163,8 @@ public class CreateTCMOntology {
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
 	    		rdfIndividual1.addPropertyValue(conjugation, rdfIndividual2);	
-	    		//conjugation.addPropertyValue(support, sup.format(numParameter1));
-	    		rdfIndividual1.addPropertyValue(support1, sup.format(numParameter1));
+//	    		conjugation.addPropertyValue(support, sup.format(numParameter1));
+//	    		rdfIndividual1.addPropertyValue(support1, sup.format(numParameter1));
 	    	}
 		}
 	    System.out.println("症状伴随关系添加结束");
