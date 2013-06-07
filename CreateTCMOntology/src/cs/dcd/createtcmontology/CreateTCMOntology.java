@@ -41,6 +41,7 @@ import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
 import edu.stanford.smi.protegex.owl.model.*;
+import edu.stanford.smi.protegex.owl.model.triplestore.Triple;
 
 public class CreateTCMOntology {
 
@@ -66,15 +67,14 @@ public class CreateTCMOntology {
 	    OWLObjectProperty bases = owlModel.createOWLObjectProperty("主要成分");
 	    bases.setDomain(prescriptionClass);
 	    bases.setRange(medicineClass);
+
+	    OWLProperty URIProperty = owlModel.createOWLDatatypeProperty("关联参数");
+	    URIProperty.setDomain(owlModel.getOWLObjectPropertyClass());
+	    URIProperty.setRange(owlModel.getXSDstring());	 
+	    URIProperty.setVisible(true);
 	    
-//	    OWLObjectProperty support1 = owlModel.createAnnotationOWLObjectProperty("支持度1");
-//	    support1.addSuperproperty(conjugation);	  
-//   
-//	    OWLDatatypeProperty support = owlModel.createAnnotationOWLDatatypeProperty("支持度");
-//	    support.setDomain(symptomClass);
-//	    support.setRange(owlModel.getXSDdouble());	    
-//	    support.addSuperproperty(conjugation);
-	    
+	    RDFProperty textURIProperty = owlModel.createRDFProperty("关联文档");
+
 	    String inputPath = "D:/Eclipse-WorkSpace/CreateTCMOntology/input/";
 	    BufferedReader br = null;
 	    String str = null;
@@ -163,8 +163,13 @@ public class CreateTCMOntology {
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
 	    		rdfIndividual1.addPropertyValue(conjugation, rdfIndividual2);	
-//	    		conjugation.addPropertyValue(support, sup.format(numParameter1));
-//	    		rdfIndividual1.addPropertyValue(support1, sup.format(numParameter1));
+
+	    	    String tmpParameters = parameter[1] + " 支持度：" + parameter[2] + " 置信度：" + parameter[3] + " 提升度：" + parameter[4] + " 确信度：" + parameter[5];
+	    	    rdfIndividual1.addPropertyValue(URIProperty, new String(tmpParameters));
+	    	    
+//	    	    String tmpURI = "http://www.knublauch.com/darwin/Darwin-Feeding-Smiling.jpg" + abc++;
+//	    	    RDFUntypedResource textURI = owlModel.createRDFUntypedResource(tmpURI);
+//	    	    rdfIndividual1.addPropertyValue(textURIProperty, textURI);
 	    	}
 		}
 	    System.out.println("症状伴随关系添加结束");
@@ -214,7 +219,10 @@ public class CreateTCMOntology {
 	    	
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
-	    		rdfIndividual1.addPropertyValue(similarity, rdfIndividual2);
+	    		rdfIndividual1.addPropertyValue(similarity, rdfIndividual2);	
+
+	    	    String tmpParameters = parameter[1] + " 支持度：" + parameter[2] + " 置信度：" + parameter[3] + " 提升度：" + parameter[4] + " 确信度：" + parameter[5];
+	    	    rdfIndividual1.addPropertyValue(URIProperty, new String(tmpParameters));
 	    	}
 		}
 	    System.out.println("方剂类似关系添加结束");
@@ -264,7 +272,10 @@ public class CreateTCMOntology {
 	    	
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
-	    		rdfIndividual1.addPropertyValue(sharing, rdfIndividual2);
+	    		rdfIndividual1.addPropertyValue(sharing, rdfIndividual2);	
+
+	    	    String tmpParameters = parameter[1] + " 支持度：" + parameter[2] + " 置信度：" + parameter[3] + " 提升度：" + parameter[4] + " 确信度：" + parameter[5];
+	    	    rdfIndividual1.addPropertyValue(URIProperty, new String(tmpParameters));
 	    	}
 		}
 	    System.out.println("中药共用关系添加结束");
@@ -314,7 +325,10 @@ public class CreateTCMOntology {
 	    	
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
-	    		rdfIndividual1.addPropertyValue(function, rdfIndividual2);
+	    		rdfIndividual1.addPropertyValue(function, rdfIndividual2);	
+
+	    	    String tmpParameters = parameter[1] + " 支持度：" + parameter[2] + " 置信度：" + parameter[3] + " 提升度：" + parameter[4] + " 确信度：" + parameter[5];
+	    	    rdfIndividual1.addPropertyValue(URIProperty, new String(tmpParameters));
 	    	}
 		}
 	    System.out.println("方剂主治关系添加结束");
@@ -364,7 +378,10 @@ public class CreateTCMOntology {
 	    	
 	    	if ((rdfIndividual1 != null) && (rdfIndividual2 != null))
 	    	{
-	    		rdfIndividual1.addPropertyValue(bases, rdfIndividual2);
+	    		rdfIndividual1.addPropertyValue(bases, rdfIndividual2);	
+
+	    	    String tmpParameters = parameter[1] + " 支持度：" + parameter[2] + " 置信度：" + parameter[3] + " 提升度：" + parameter[4] + " 确信度：" + parameter[5];
+	    	    rdfIndividual1.addPropertyValue(URIProperty, new String(tmpParameters));
 	    	}
 		}
 	    System.out.println("方剂组成关系添加结束");
